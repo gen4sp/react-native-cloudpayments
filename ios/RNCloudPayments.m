@@ -1,5 +1,6 @@
 #import "RNCloudPayments.h"
 #import "SDK/Card.m"
+#import "SDK/PKPaymentConverter.m"
 
 @implementation RNCloudPayments
 
@@ -26,7 +27,7 @@ RCT_EXPORT_METHOD(getType: (NSString *)cardNumber
 {
     CardType cardType = [Card cardTypeFromCardNumber: cardNumber];
     NSString *cardTypeString = [Card cardTypeToString: cardType];
-    
+
     resolve(cardTypeString);
 }
 
@@ -38,9 +39,18 @@ RCT_EXPORT_METHOD(createCryptogram: (NSString *)cardNumber
                   reject: (RCTPromiseRejectBlock)reject)
 {
     Card *_card = [[Card alloc] init];
-    
+
     NSString *cryptogram = [_card makeCardCryptogramPacket: cardNumber andExpDate:cardExp andCVV:cardCvv andMerchantPublicID:publicId];
-    
+
+    resolve(cryptogram);
+}
+
+RCT_EXPORT_METHOD(convertToString: (PKPayment *)payment
+                  resolve: (RCTPromiseResolveBlock)resolve
+                  reject: (RCTPromiseRejectBlock)reject)
+{
+    NSString *cryptogram = [PKPaymentConverter convertToString:payment]
+
     resolve(cryptogram);
 }
 @end
