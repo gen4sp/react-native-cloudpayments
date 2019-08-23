@@ -26,6 +26,14 @@ export default class RNCloudPayments {
       return createError(error);
     }
   }
+
+  static async convertToString(payment) {
+    try {
+      return await RNCloudPaymentsModule.convertToString(payment);
+    } catch(error) {
+      return createError(error);
+    }
+  }
 }
 
 class RNCloudPaymentsError extends Error {
